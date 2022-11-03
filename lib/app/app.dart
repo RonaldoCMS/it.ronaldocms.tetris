@@ -10,6 +10,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => TetrisBloc(),
+      lazy: false,
       child: MaterialApp(
         title: 'Tetris Game',
         theme: ThemeData(

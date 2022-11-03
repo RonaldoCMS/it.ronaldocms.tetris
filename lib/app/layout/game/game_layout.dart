@@ -6,7 +6,8 @@ import 'package:tetris/utils/colors.dart';
 class GameLayout extends StatelessWidget {
   final Widget grid;
   final Widget panel;
-  const GameLayout({required this.panel, required this.grid, Key? key})
+  final int points;
+  const GameLayout({required this.points, required this.panel, required this.grid, Key? key})
       : super(key: key);
 
   @override
@@ -17,15 +18,17 @@ class GameLayout extends StatelessWidget {
         child: Center(
           child: Column(
             children: <Widget>[
-              const Expanded(
-                flex: 10,
-                child: Center(
-                  child: Text(
-                    "WORK IN PROGRESS...",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
+              Expanded(
+                  flex: 10,
+                  child: Padding(
+                    padding: const  EdgeInsets.all(8.0),
+                    child: FittedBox(
+                      child: Text(
+                        "$points points",
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  )),
               Expanded(flex: 85, child: GameGridLayout(content: grid)),
               Expanded(
                 flex: 10,
