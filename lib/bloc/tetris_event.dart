@@ -14,3 +14,5 @@ class TetrisMovingDown extends TetrisEvent {}
 class TetrisStop extends TetrisEvent {}
 
 class TetrisGo extends TetrisEvent {}
+
+class TetrisGameOver extends TetrisEvent {}

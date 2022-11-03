@@ -25,8 +25,8 @@ class Game implements GameInterface {
   int points = 0;
 
   Game({
-    this.speedTetro = const Duration(milliseconds: 800),
-    this.speed = const Duration(milliseconds: 1200),
+    this.speedTetro = const Duration(milliseconds: 300),
+    this.speed = const Duration(milliseconds: 500),
     this.col = 10,
     this.row = 15,
   }) {
@@ -44,14 +44,16 @@ class Game implements GameInterface {
 
   void _startGame(Timer timer, void Function(TetrisEvent) add) {
     if (_movingSubscription != null && _movingSubscription!.isActive) {
-      //: when game is finish
+      if (_isFinished) {
+        print("FINISHED");
+        add(TetrisGameOver());
+        _movingSubscription?.cancel();
+      }
     } else {
+      print("OFF");
       _generateNewTetro();
       _movingGrid();
       _movingSubscription = _startTetro(add);
-      points += 10;
-      add(TetrisMovingDown());
-      print(points);
     }
   }
 
@@ -93,13 +95,26 @@ class Game implements GameInterface {
           return;
         }
       }
+      if (_isFinished) {
+        movingDown(TetrisGameOver());
+      }
       if (tetro.attual[0] > COUNTER - col) {
         timer.cancel();
       } else {
         moveDown();
         movingDown(TetrisMovingDown());
+        points += 10;
       }
     });
+  }
+
+  bool get _isFinished {
+    for (int i = 10; i < 20; i++) {
+      if (box[i] != MyColors.BLOCK_EMPTY) {
+        return true;
+      }
+    }
+    return false;
   }
 
   bool _isCollapsed(int i) =>
