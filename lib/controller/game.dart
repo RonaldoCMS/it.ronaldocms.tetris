@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:tetris/bloc/tetris_bloc.dart';
@@ -117,16 +118,76 @@ class Game implements GameInterface {
   }
 
   @override
-  void changeLeft() => tetro.changeLeft();
+  void changeLeft() {
+    tetro.changeLeft();
+  }
 
   @override
-  void changeRight() => tetro.changeRight();
+  void changeRight() {
+    bool iCan = true;
+
+    for (var element in tetro.attual) {
+      log(element.toString());
+
+      if (box[element - 1] != MyColors.BLOCK_EMPTY) {
+        iCan = false;
+        break;
+      }
+      if (box[element + 1] != MyColors.BLOCK_EMPTY) {
+        iCan = false;
+        break;
+      }
+
+      if (box[element + 1] != MyColors.BLOCK_EMPTY) {
+        iCan = false;
+        break;
+      }
+
+      if (element.toString().endsWith("9")) {
+        iCan = false;
+        break;
+      }
+    }
+    if (iCan) tetro.changeRight();
+  }
 
   @override
-  void moveLeft() => tetro.moveLeft();
+  void moveLeft() {
+    bool iCan = true;
+
+    for (var element in tetro.attual) {
+      log(element.toString());
+      if (box[element - 1] != MyColors.BLOCK_EMPTY) {
+        iCan = false;
+        break;
+      }
+
+      if (element % 10 == 0) {
+        iCan = false;
+        break;
+      }
+    }
+    if (iCan) tetro.moveLeft();
+  }
 
   @override
-  void moveRight() => tetro.moveRight();
+  void moveRight() {
+    bool iCan = true;
+
+    for (var element in tetro.attual) {
+      log(element.toString());
+      if (box[element + 1] != MyColors.BLOCK_EMPTY) {
+        iCan = false;
+        break;
+      }
+
+      if (element.toString().endsWith("9")) {
+        iCan = false;
+        break;
+      }
+    }
+    if (iCan) tetro.moveRight();
+  }
 
   @override
   void moveDown() => tetro.moveDown();
